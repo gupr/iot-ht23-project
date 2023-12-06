@@ -46,6 +46,7 @@ Forma en databas i form av file_format.txt
 
   Gustav :---> fixa objekttransfer mellan activities (Parcelable)
 
+  Visa proof-of-concept på S3
  */
     NfcAdapter nfcAdapter;
     Button simulateButton;
