@@ -31,6 +31,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
 public class MainActivity extends Activity {
@@ -42,11 +43,10 @@ Forma en databas i form av file_format.txt
 
  uppdelade uppgifter: (till på torsdag)
 
-  Theodor : ---> fixa data till databasen.
+  Theodor : ---> fixa data till databasen. (DONE)
 
-  Gustav :---> fixa objekttransfer mellan activities (Parcelable)
+  Gustav :---> fixa objekttransfer mellan activities (Parcelable) (DONE)
 
-  Visa proof-of-concept på S3
  */
     NfcAdapter nfcAdapter;
     Button simulateButton;
@@ -71,7 +71,6 @@ Forma en databas i form av file_format.txt
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().requestFeature(Window.FEATURE_ACTIVITY_TRANSITIONS);
-
         setContentView(R.layout.activity_main);
         simulateButton = findViewById(R.id.simulate_button);
         simulateButton.setOnClickListener(new View.OnClickListener() {
@@ -81,7 +80,6 @@ Forma en databas i form av file_format.txt
                 switchActivities();
             }
         });
-
         // Set an exit transition
         getWindow().setExitTransition(new AutoTransition());
     }
@@ -120,34 +118,22 @@ Forma en databas i form av file_format.txt
             // Code for tag has been discovered.
             if (NfcAdapter.ACTION_TAG_DISCOVERED.equals(intent.getAction())) {
                 System.out.println("TAG DISCOVERED");
-
-                CharSequence text = "NFC Tag touched!";
-                int duration = Toast.LENGTH_SHORT;
-
-                Toast toast = Toast.makeText(this /* MyActivity */, text, duration);
+                Toast toast = Toast.makeText(this /* MyActivity */, "NFC Tag touched!", Toast.LENGTH_SHORT);
                 toast.show();
-
                 String serial = GetNfcSerial(intent);
                 String info = GetNfcFullInfo(intent);
                 payload = GetNfcPayload(intent);
-
-                Toast toast2 = Toast.makeText(this /* MyActivity */, "Switching", duration);
-                toast2.show();
-
                 ((TextView) findViewById(R.id.serial_text)).setText("NFC Tag Serial Number:\n" + serial);
                 ((TextView) findViewById(R.id.info_text)).setText("Info:\n" + info);
                 ((TextView) findViewById(R.id.payload_text)).setText("Content:\n" + payload.substring(payload.lastIndexOf("en") + 2));
-
                 (new Handler()).postDelayed(this::switchActivities, 1000);
-
             }
             else System.out.println("Tag failed discover");
-        } catch(Exception e) {
+        } catch (Exception e) {
             ((TextView)findViewById(R.id.info_text)).setText("Failed due to " + e);
         }
-
-
     }
+    // Get the payload of the NFC tag (the text content)
     private String GetNfcPayload (Intent intent) {
         Parcelable[] ndefMessageArray = intent.getParcelableArrayExtra(
                 NfcAdapter.EXTRA_NDEF_MESSAGES);
@@ -156,11 +142,13 @@ Forma en databas i form av file_format.txt
         return msg;
     }
 
+    // Get the serial number of NFC tag
     private String GetNfcSerial (Intent intent) {
         String msg = ByteArrayToHexString(intent.getByteArrayExtra(NfcAdapter.EXTRA_ID));
         return msg;
     }
 
+    // Get the full Ndefmessage from the NFC tag
     private String GetNfcFullInfo (Intent intent) {
         Parcelable[] rawMessages = intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES);
         String tagMsg = "";
@@ -173,7 +161,6 @@ Forma en databas i form av file_format.txt
                 record.append("Message #" + i + ": " + messages[i] + "\n");
             }
             tagMsg = record.toString();
-
         }
         return tagMsg;
     }
@@ -196,9 +183,10 @@ Forma en databas i form av file_format.txt
 
     private void switchActivities() {
         finish();
-        MuseumExhibit exhibit = new MuseumExhibit("Mona Lisa", 4328, null, 1);
+        // Create a new MuseumExhibit object and send it to the next activity
+        MuseumExhibit exhibit = new MuseumExhibit("Mona Lisa", 1234, null, 1);
         Intent intent = new Intent(this, ExhibitActivity.class);
-        intent.putExtra("payload", payload.substring(payload.lastIndexOf("en") + 2));
+        intent.putExtra("exhibit", exhibit);
         intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
         startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
     }
