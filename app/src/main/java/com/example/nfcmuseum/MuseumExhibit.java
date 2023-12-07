@@ -1,8 +1,9 @@
 package com.example.nfcmuseum;
 
 import android.media.Image;
+import java.io.Serializable;
 
-public class MuseumExhibit {
+public class MuseumExhibit implements Serializable {
 
     private String title;
     private int year;
