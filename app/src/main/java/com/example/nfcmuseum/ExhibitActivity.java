@@ -13,6 +13,8 @@ import android.widget.TextView;
 
 import androidx.cardview.widget.CardView;
 
+import org.w3c.dom.Text;
+
 public class ExhibitActivity extends Activity {
 
     Button backButton;
@@ -80,24 +82,17 @@ public class ExhibitActivity extends Activity {
             }
         });
 
-        exhibitImg =  findViewById(R.id.exhibitImage);
-        exhibitImg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //exhibitImg.setLayoutParams();
-            }
-        });
         // Set an exit transition
         getWindow().setExitTransition(new AutoTransition());
-
+        exhibitImg = findViewById(R.id.exhibitImage);
         exhibitImg.setImageResource(R.drawable.monalisa);
-
         Intent intent = getIntent();
         // receive the value by getStringExtra() method and
         // key must be same which is send by first activity
-        String str = intent.getStringExtra("payload");
-        // display the string into textView
-        ((TextView) findViewById(R.id.exhibitTitle)).setText(str);
+        MuseumExhibit exhibit = (MuseumExhibit) intent.getSerializableExtra("exhibit");
+        // display the title string on textView
+        ((TextView) findViewById(R.id.exhibitTitle)).setText(exhibit.getTitle());
+        ((TextView) findViewById(R.id.exhibitYear)).setText("" + exhibit.getYear());
     }
 
     private void switchActivities() {
