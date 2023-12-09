@@ -3,8 +3,6 @@ package com.example.nfcmuseum;
 import android.app.Activity;
 import android.app.ActivityOptions;
 import android.app.PendingIntent;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.nfc.NdefMessage;
@@ -20,19 +18,24 @@ import android.nfc.tech.NfcV;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
-import android.os.SystemClock;
 import android.transition.AutoTransition;
-import android.util.Log;
-import android.view.Menu;
 import android.view.View;
 import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.Serializable;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class MainActivity extends Activity {
 /*
@@ -52,6 +55,7 @@ Forma en databas i form av file_format.txt
     Button simulateButton;
     String payload;
     // The database.
+
     HashMap<Integer, MuseumExhibit> exhibitList = new HashMap<>();
 
     // list of NFC technologies detected:
@@ -76,7 +80,6 @@ Forma en databas i form av file_format.txt
         simulateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                payload = "enMona Lisa";
                 switchActivities();
             }
         });
@@ -125,7 +128,7 @@ Forma en databas i form av file_format.txt
                 payload = GetNfcPayload(intent);
                 ((TextView) findViewById(R.id.serial_text)).setText("NFC Tag Serial Number:\n" + serial);
                 ((TextView) findViewById(R.id.info_text)).setText("Info:\n" + info);
-                ((TextView) findViewById(R.id.payload_text)).setText("Content:\n" + payload.substring(payload.lastIndexOf("en") + 2));
+                ((TextView) findViewById(R.id.payload_text)).setText("Content:\n" + payload);
                 (new Handler()).postDelayed(this::switchActivities, 1000);
             }
             else System.out.println("Tag failed discover");
@@ -139,7 +142,11 @@ Forma en databas i form av file_format.txt
                 NfcAdapter.EXTRA_NDEF_MESSAGES);
         NdefMessage ndefMessage = (NdefMessage) ndefMessageArray[0];
         String msg = new String(ndefMessage.getRecords()[0].getPayload());
-        return msg;
+
+        //payload = msg;
+        //testing the payload and if it would work to just aquire the id to get the different exhibits
+        payload = "2";
+        return payload;
     }
 
     // Get the serial number of NFC tag
@@ -181,12 +188,132 @@ Forma en databas i form av file_format.txt
         return out;
     }
 
+
+    private MuseumExhibit exhibitReader(String targetExhibitId) {
+        String fileName = "exhibit_database.txt";
+        Map<String, List<String>> exhibitsMap = new HashMap<>();
+        BufferedReader reader = null;
+        try {
+            reader = new BufferedReader(new InputStreamReader(getAssets().open(fileName)));
+            String line;
+            String currentExhibitId = null;
+            List<String> currentExhibitParameters = new ArrayList<>();
+            while ((line = reader.readLine()) != null) {
+                if (line.equals("-")) {
+                    // End of an exhibit, add parameters to the map
+                    if (currentExhibitId != null) {
+                        exhibitsMap.put(currentExhibitId, new ArrayList<>(currentExhibitParameters));
+                        currentExhibitParameters.clear();
+                    }
+                } else {
+                    // Split the line into key and value
+                    String[] parts = line.split("=");
+                    if (parts.length == 2) {
+                        String key = parts[0].trim();
+                        String value = parts[1].trim();
+                        if (key.equals("exhibit_id")) {
+                            currentExhibitId = value;
+                        }
+                        currentExhibitParameters.add(value);
+                    }
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (reader != null) {
+                try {
+                    reader.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        // Ensure the map contains the target exhibit
+        if (exhibitsMap.containsKey(targetExhibitId)) {
+            List<String> exhibitParameters = exhibitsMap.get(targetExhibitId);
+            // Check if there are enough parameters
+            if (exhibitParameters.size() >= 5) {
+                MuseumExhibit exhibit = new MuseumExhibit(
+                        exhibitParameters.get(0),  // exhibit id
+                        exhibitParameters.get(1),  // exhibit name
+                        exhibitParameters.get(2),  // artist year
+                        exhibitParameters.get(3),  // artist id
+                        exhibitParameters.get(4),
+                        null,
+                        null,
+                        null
+                         );
+                return exhibit;
+            }
+        }
+        return null;
+    }
+
+    private ExhibitInfo exhibitInfoReader(String targetExhibitId) {
+        String fileName = "exhibit_database.txt";
+        Map<String, List<String>> exhibitsMap = new HashMap<>();
+        List<String> objectList = new ArrayList<String>();
+        BufferedReader reader = null;
+        try {
+            reader = new BufferedReader(new InputStreamReader(getAssets().open(fileName)));
+            String line;
+            String currentExhibitId = null;
+            List<String> currentExhibitParameters = new ArrayList<>();
+            while ((line = reader.readLine()) != null) {
+                if (line.equals("-")) {
+                    // End of an exhibit, add parameters to the map
+                    if (currentExhibitId != null) {
+                        exhibitsMap.put(currentExhibitId, new ArrayList<>(currentExhibitParameters));
+                        currentExhibitParameters.clear();
+                    }
+                } else {
+                    // Split the line into key and value
+                    String[] parts = line.split("=");
+                    if (parts.length == 2) {
+                        String key = parts[0].trim();
+                        String value = parts[1].trim();
+                        if (key.equals("exhibit_id")) {
+                            currentExhibitId = value;
+                        }
+                        currentExhibitParameters.add(value);
+                    }
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (reader != null) {
+                try {
+                    reader.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        // Ensure the map contains the target exhibit
+        if (exhibitsMap.containsKey(targetExhibitId)) {
+            List<String> exhibitParameters = exhibitsMap.get(targetExhibitId);
+            // Check if there are enough parameters
+            if (exhibitParameters.size() >= 5) {
+                ExhibitInfo info = new ExhibitInfo(
+                        exhibitParameters.get(5), // exhibit description
+                        exhibitParameters.get(6),// exhibit history
+                        objectList = new ArrayList<String>(Arrays.asList(exhibitParameters.get(7).split(",")))// similar exhibits
+                );
+                return info;
+            }
+        }
+        return null;
+    }
+
+
+
     private void switchActivities() {
         finish();
-        // Create a new MuseumExhibit object and send it to the next activity
-        MuseumExhibit exhibit = new MuseumExhibit("Mona Lisa", 1234, null, 1);
         Intent intent = new Intent(this, ExhibitActivity.class);
-        intent.putExtra("exhibit", exhibit);
+        intent.putExtra("exhibit", exhibitReader("3")); //This is where payload should be used to deliver the ID
+        intent.putExtra("exhibitInfo", exhibitInfoReader("3")); //This is where payload should be used to deliver the ID
         intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
         startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
     }

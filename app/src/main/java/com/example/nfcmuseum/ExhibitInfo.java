@@ -1,27 +1,37 @@
 package com.example.nfcmuseum;
 
-import android.media.Image;
+import java.io.Serializable;
+import java.util.List;
 
-public class ExhibitInfo {
-    private String title; // Artist name etc.
+public class ExhibitInfo implements Serializable {
     private String description;
-    private Image img; // artist image or other related image
+    private String history;
+    private List<String> similar;
 
-    public ExhibitInfo(String title, String description, Image img) {
-        this.title = title;
+
+    public ExhibitInfo(String description, String history, List<String> similar) {
         this.description = description;
-        this.img = img;
+        this.history = history;
+        this.similar = similar;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public List<String> getSimilar() {
+        return similar;
     }
 
-    public void setDescription(String description) {
+    public void setSimilar(List<String> similar) {
+        this.similar = similar;
+    }
+
+    public String getDescriptionInfoCard() {return description;}
+
+    public String getHistoryInfoCard() {return history;}
+
+    public void setHistoryInfoCard(String history) {this.history = history;}
+
+    public void setDescriptionInfoCard(String description) {
         this.description = description;
     }
 
-    public void setImg(Image img) {
-        this.img = img;
-    }
+
 }
