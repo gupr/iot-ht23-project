@@ -19,19 +19,8 @@ public class ExhibitInfo implements Serializable {
         return similar;
     }
 
-    public void setSimilar(List<String> similar) {
-        this.similar = similar;
-    }
-
     public String getDescriptionInfoCard() {return description;}
 
     public String getHistoryInfoCard() {return history;}
-
-    public void setHistoryInfoCard(String history) {this.history = history;}
-
-    public void setDescriptionInfoCard(String description) {
-        this.description = description;
-    }
-
 
 }

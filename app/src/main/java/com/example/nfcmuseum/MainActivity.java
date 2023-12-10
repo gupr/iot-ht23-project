@@ -38,25 +38,11 @@ import java.util.List;
 import java.util.Map;
 
 public class MainActivity extends Activity {
-/*
-TODO:
-Forma en databas i form av file_format.txt
 
- ^^^ efter att detta är gjort så börjar vi arbeta med filereader osv... helt enkelt få in datan i själva kanpparna osv....
-
- uppdelade uppgifter: (till på torsdag)
-
-  Theodor : ---> fixa data till databasen. (DONE)
-
-  Gustav :---> fixa objekttransfer mellan activities (Parcelable) (DONE)
-
- */
     NfcAdapter nfcAdapter;
     Button simulateButton;
     String payload;
-    // The database.
 
-    HashMap<Integer, MuseumExhibit> exhibitList = new HashMap<>();
 
     // list of NFC technologies detected:
     private final String[][] techList = new String[][] {
@@ -98,7 +84,7 @@ Forma en databas i form av file_format.txt
         // enabling foreground dispatch for getting intent from NFC event:
         nfcAdapter = NfcAdapter.getDefaultAdapter(this);
         if (nfcAdapter == null) {
-            ((TextView) findViewById(R.id.payload_text)).setText("ERROR: No NFC adapter detected");
+            ((TextView) findViewById(R.id.payload_text)).setText("No NFC adapter detected");
         } else {
             nfcAdapter.enableForegroundDispatch(this, pendingIntent, new IntentFilter[]{filter}, this.techList);
         }
@@ -142,11 +128,7 @@ Forma en databas i form av file_format.txt
                 NfcAdapter.EXTRA_NDEF_MESSAGES);
         NdefMessage ndefMessage = (NdefMessage) ndefMessageArray[0];
         String msg = new String(ndefMessage.getRecords()[0].getPayload());
-
-        //payload = msg;
-        //testing the payload and if it would work to just aquire the id to get the different exhibits
-        payload = "2";
-        return payload;
+        return msg;
     }
 
     // Get the serial number of NFC tag
@@ -187,7 +169,6 @@ Forma en databas i form av file_format.txt
         }
         return out;
     }
-
 
     private MuseumExhibit exhibitReader(String targetExhibitId) {
         String fileName = "exhibit_database.txt";
@@ -253,7 +234,6 @@ Forma en databas i form av file_format.txt
     private ExhibitInfo exhibitInfoReader(String targetExhibitId) {
         String fileName = "exhibit_database.txt";
         Map<String, List<String>> exhibitsMap = new HashMap<>();
-        List<String> objectList = new ArrayList<String>();
         BufferedReader reader = null;
         try {
             reader = new BufferedReader(new InputStreamReader(getAssets().open(fileName)));
@@ -295,11 +275,12 @@ Forma en databas i form av file_format.txt
         if (exhibitsMap.containsKey(targetExhibitId)) {
             List<String> exhibitParameters = exhibitsMap.get(targetExhibitId);
             // Check if there are enough parameters
-            if (exhibitParameters.size() >= 5) {
+            if (exhibitParameters.size() >= 3) {
+                List<String> objectList = new ArrayList<>(Arrays.asList(exhibitParameters.get(7).split(",")));
                 ExhibitInfo info = new ExhibitInfo(
                         exhibitParameters.get(5), // exhibit description
-                        exhibitParameters.get(6),// exhibit history
-                        objectList = new ArrayList<String>(Arrays.asList(exhibitParameters.get(7).split(",")))// similar exhibits
+                        exhibitParameters.get(6), // exhibit history
+                        objectList // similar exhibits
                 );
                 return info;
             }
@@ -307,13 +288,12 @@ Forma en databas i form av file_format.txt
         return null;
     }
 
-
-
     private void switchActivities() {
         finish();
         Intent intent = new Intent(this, ExhibitActivity.class);
-        intent.putExtra("exhibit", exhibitReader("3")); //This is where payload should be used to deliver the ID
-        intent.putExtra("exhibitInfo", exhibitInfoReader("3")); //This is where payload should be used to deliver the ID
+        payload = "1";
+        intent.putExtra("exhibit", exhibitReader(payload)); //This is where payload should be used to deliver the ID
+        intent.putExtra("exhibitInfo", exhibitInfoReader(payload)); //This is where payload should be used to deliver the ID
         intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
         startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
     }

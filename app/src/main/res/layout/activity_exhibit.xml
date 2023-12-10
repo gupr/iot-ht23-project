@@ -12,12 +12,12 @@
         android:layout_height="106dp"
         android:layout_marginStart="32dp"
         android:layout_marginBottom="141dp"
+        android:background="@drawable/rounded_corners"
         android:backgroundTint="#5E3333"
         android:elevation="0dp"
         android:fontFamily="@font/arbutusslab_regular"
         android:text="Artist"
         android:textSize="16sp"
-        app:cornerRadius="30dp"
         app:layout_constraintBottom_toTopOf="@+id/exhibit_back_button"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -27,12 +27,12 @@
         android:layout_height="106dp"
         android:layout_marginEnd="32dp"
         android:layout_marginBottom="141dp"
+        android:background="@drawable/rounded_corners"
         android:backgroundTint="#5E3333"
         android:elevation="0dp"
         android:fontFamily="@font/arbutusslab_regular"
         android:text="History"
         android:textSize="16sp"
-        app:cornerRadius="30dp"
         app:layout_constraintBottom_toTopOf="@+id/exhibit_back_button"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -42,12 +42,12 @@
         android:layout_height="106dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="10dp"
+        android:background="@drawable/rounded_corners"
         android:backgroundTint="#5E3333"
         android:elevation="0dp"
         android:fontFamily="@font/arbutusslab_regular"
         android:text="Description"
         android:textSize="14sp"
-        app:cornerRadius="30dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/artistButton" />
 
@@ -57,13 +57,13 @@
         android:layout_height="106dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="32dp"
+        android:background="@drawable/rounded_corners"
         android:backgroundTint="#5E3333"
         android:elevation="0dp"
         android:fontFamily="@font/arbutusslab_regular"
         android:hapticFeedbackEnabled="true"
         android:text="Similar\nExhibits"
         android:textSize="16sp"
-        app:cornerRadius="30dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/historyButton" />
 
@@ -137,10 +137,10 @@
         android:layout_marginTop="385dp"
         android:layout_marginEnd="289dp"
         android:layout_marginBottom="16dp"
+        android:background="@drawable/small_buttons_roundedcorners"
         android:backgroundTint="#FE897F"
         android:fontFamily="@font/arbutusslab_regular"
         android:text="BACK"
-        app:cornerRadius="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -177,7 +177,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="536dp"
+            android:layout_height="match_parent"
             android:forceHasOverlappingRendering="false"
             android:padding="4dp">
 
@@ -194,17 +194,19 @@
                 app:iconSize="32dp"
                 app:iconTint="#FFFFFF"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintHorizontal_bias="0.992"
                 app:layout_constraintStart_toStartOf="parent"
-                tools:layout_editor_absoluteY="5dp" />
+                tools:layout_editor_absoluteY="1dp" />
 
             <TextView
                 android:id="@+id/title"
                 style="@style/TextAppearance.MaterialComponents.Headline3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="60dp"
                 android:fontFamily="@font/arbutusslab_regular"
                 android:text="Description"
+                android:textSize="30sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 tools:ignore="MissingConstraints"
@@ -213,8 +215,9 @@
             <TextView
                 android:id="@+id/body"
                 style="@style/TextAppearance.MaterialComponents.Body1"
-                android:layout_width="358dp"
-                android:layout_height="540dp"
+                android:layout_width="356dp"
+                android:layout_height="542dp"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="2dp"
                 android:fontFamily="@font/arbutusslab_regular"
                 android:text="The title of the painting, which is known in English as Mona Lisa, is based on the presumption that it depicts Lisa del Giocondo, although her likeness is uncertain. Renaissance art historian Giorgio Vasari wrote that &quot;Leonardo undertook to paint, for Francesco del Giocondo, the portrait of Mona Lisa, his wife.&quot;[17][18][19] Monna in Italian is a polite form of address originating as ma donna—similar to Ma'am, Madam, or my lady in English. This became madonna, and its contraction monna. The title of the painting, though traditionally spelled Mona in English, is spelled in Italian as Monna Lisa (mona being a vulgarity in Italian), but this is rare in English.[20][21]  Lisa del Giocondo was a member of the Gherardini family of Florence and Tuscany, and the wife of wealthy Florentine silk merchant Francesco del Giocondo.[22] The painting is thought to have been commissioned for their new home, and to celebrate the birth of their second son, Andrea.[23] The Italian name for the painting, La Gioconda, means 'jocund' ('happy' or 'jovial') or, literally, 'the jocund one', a pun on the feminine form of Lisa's married name, Giocondo.[22][24] In French, the title La Joconde has the same meaning. "
