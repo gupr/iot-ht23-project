@@ -2,7 +2,9 @@ package com.example.nfcmuseum;
 
 import android.app.Activity;
 import android.app.ActivityOptions;
+import android.app.AlertDialog;
 import android.app.PendingIntent;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.nfc.NdefMessage;
@@ -22,6 +24,7 @@ import android.transition.AutoTransition;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,7 +46,6 @@ public class MainActivity extends Activity {
     Button simulateButton;
     String payload;
 
-
     // list of NFC technologies detected:
     private final String[][] techList = new String[][] {
             new String[] {
@@ -62,11 +64,24 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         getWindow().requestFeature(Window.FEATURE_ACTIVITY_TRANSITIONS);
         setContentView(R.layout.activity_main);
+        EditText simPayload = new EditText(this);
         simulateButton = findViewById(R.id.simulate_button);
+        // Dialog for inputting simulated payload
+        AlertDialog dialog = new AlertDialog.Builder(this)
+                .setTitle("Set payload")
+                .setMessage("Numerical ID (e.g. '1', '3')")
+                .setView(simPayload)
+                .setPositiveButton("OK", (dialogInterface, i) -> {
+                    payload = simPayload.getText().toString();
+                    switchActivities();
+                })
+                .setNegativeButton("Cancel", null)
+                .create();
         simulateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                switchActivities();
+                // Show the dialog
+                dialog.show();
             }
         });
         // Set an exit transition
@@ -117,7 +132,7 @@ public class MainActivity extends Activity {
                 ((TextView) findViewById(R.id.payload_text)).setText("Content:\n" + payload);
                 (new Handler()).postDelayed(this::switchActivities, 1000);
             }
-            else System.out.println("Tag failed discover");
+            else System.out.println("Failed to discover tag");
         } catch (Exception e) {
             ((TextView)findViewById(R.id.info_text)).setText("Failed due to " + e);
         }
@@ -128,6 +143,7 @@ public class MainActivity extends Activity {
                 NfcAdapter.EXTRA_NDEF_MESSAGES);
         NdefMessage ndefMessage = (NdefMessage) ndefMessageArray[0];
         String msg = new String(ndefMessage.getRecords()[0].getPayload());
+        msg = msg.substring(msg.lastIndexOf("en") + 2);
         return msg;
     }
 
@@ -289,12 +305,22 @@ public class MainActivity extends Activity {
     }
 
     private void switchActivities() {
-        finish();
         Intent intent = new Intent(this, ExhibitActivity.class);
-        payload = "1";
-        intent.putExtra("exhibit", exhibitReader(payload)); //This is where payload should be used to deliver the ID
-        intent.putExtra("exhibitInfo", exhibitInfoReader(payload)); //This is where payload should be used to deliver the ID
-        intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-        startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
+        if (exhibitReader(payload) != null) {
+            finish();
+            intent.putExtra("exhibit", exhibitReader(payload)); //This is where payload should be used to deliver the ID
+            intent.putExtra("exhibitInfo", exhibitInfoReader(payload)); //This is where payload should be used to deliver the ID
+            intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+            startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
+        }
+        else {
+            System.out.println("REACHED");
+            AlertDialog error = new AlertDialog.Builder(this)
+                    .setTitle("Error")
+                    .setMessage("Could not find exhibit with the ID of: " + payload)
+                    .setPositiveButton("OK", null)
+                    .create();
+            error.show();
+        }
     }
 }

@@ -8,7 +8,6 @@ public class ExhibitInfo implements Serializable {
     private String history;
     private List<String> similar;
 
-
     public ExhibitInfo(String description, String history, List<String> similar) {
         this.description = description;
         this.history = history;

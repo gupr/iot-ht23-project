@@ -37,14 +37,14 @@ public class ExhibitActivity extends Activity {
     CardView infoCard;
     ImageView exhibitImg;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         getWindow().requestFeature(Window.FEATURE_ACTIVITY_TRANSITIONS);
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exhibit);
 
+        // BUTTONS & CARDS
+        infoCard = findViewById(R.id.infoCard);
         backButton = findViewById(R.id.exhibit_back_button);
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,7 +54,6 @@ public class ExhibitActivity extends Activity {
         });
 
         artistButton = findViewById(R.id.artistButton);
-        infoCard = findViewById(R.id.infoCard);
         artistButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -65,7 +64,6 @@ public class ExhibitActivity extends Activity {
                 String artistID = exhibit.getArtistID();
                 ((TextView) findViewById(R.id.body)).setText(artistReader(artistID, 2));
             }
-
         });
 
         exitArtist = findViewById(R.id.exitArtist);
@@ -116,8 +114,8 @@ public class ExhibitActivity extends Activity {
         getWindow().setExitTransition(new AutoTransition());
         exhibitImg = findViewById(R.id.exhibitImage);
         Intent intent = getIntent();
-        // receive the value by getStringExtra() method and
-        // key must be same which is send by first activity
+        // receive the value by getSerializableExtra() method and
+        // key must be same which is sent by first activity
         MuseumExhibit exhibit = (MuseumExhibit) intent.getSerializableExtra("exhibit");
         // display the title string on textView
         ((TextView) findViewById(R.id.exhibitTitle)).setText(exhibit.getTitle());
