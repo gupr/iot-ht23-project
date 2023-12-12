@@ -4,21 +4,13 @@ import android.app.Activity;
 import android.app.ActivityOptions;
 import android.app.AlertDialog;
 import android.app.PendingIntent;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.nfc.NdefMessage;
 import android.nfc.NfcAdapter;
-import android.nfc.tech.IsoDep;
-import android.nfc.tech.MifareClassic;
-import android.nfc.tech.MifareUltralight;
-import android.nfc.tech.Ndef;
 import android.nfc.tech.NfcA;
-import android.nfc.tech.NfcB;
-import android.nfc.tech.NfcF;
 import android.nfc.tech.NfcV;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.Parcelable;
 import android.transition.AutoTransition;
 import android.view.View;
@@ -27,13 +19,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -43,19 +33,16 @@ import java.util.Map;
 public class MainActivity extends Activity {
 
     NfcAdapter nfcAdapter;
+    PendingIntent pendingIntent;
+    IntentFilter tagFilter;
     Button simulateButton;
     String payload;
 
-    // list of NFC technologies detected:
-    private final String[][] techList = new String[][] {
-            new String[] {
+    // List of NFC technologies used
+    private final String[][] nfcList = new String[][]{
+            new String[]{
                     NfcA.class.getName(),
-                    NfcB.class.getName(),
-                    NfcF.class.getName(),
-                    NfcV.class.getName(),
-                    IsoDep.class.getName(),
-                    MifareClassic.class.getName(),
-                    MifareUltralight.class.getName(), Ndef.class.getName()
+                    NfcV.class.getName()
             }
     };
 
@@ -84,6 +71,16 @@ public class MainActivity extends Activity {
                 dialog.show();
             }
         });
+        // Create a PendingIntent object so the system can
+        // populate it with the details of the tag when it is scanned.
+        pendingIntent = PendingIntent.getActivity(this, 0, new Intent(this, getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), PendingIntent.FLAG_MUTABLE);
+        // Create intent filter for NFC tag:
+        tagFilter = new IntentFilter(NfcAdapter.ACTION_TAG_DISCOVERED);
+        // Set up NFC adapter from device
+        nfcAdapter = NfcAdapter.getDefaultAdapter(this);
+        if (nfcAdapter == null) {
+            ((TextView) findViewById(R.id.payload_text)).setText("No NFC adapter detected");
+        }
         // Set an exit transition
         getWindow().setExitTransition(new AutoTransition());
     }
@@ -91,28 +88,13 @@ public class MainActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-        // creating pending intent:
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, new Intent(this, getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), PendingIntent.FLAG_MUTABLE);
-        // creating intent receiver for NFC events:
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(NfcAdapter.ACTION_TAG_DISCOVERED);
-        // enabling foreground dispatch for getting intent from NFC event:
-        nfcAdapter = NfcAdapter.getDefaultAdapter(this);
-        if (nfcAdapter == null) {
-            ((TextView) findViewById(R.id.payload_text)).setText("No NFC adapter detected");
-        } else {
-            nfcAdapter.enableForegroundDispatch(this, pendingIntent, new IntentFilter[]{filter}, this.techList);
-        }
+        nfcAdapter.enableForegroundDispatch(this, pendingIntent, new IntentFilter[]{tagFilter}, nfcList);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        NfcAdapter nfcAdapter = NfcAdapter.getDefaultAdapter(this);
-        if (nfcAdapter != null) {
-            // disabling foreground dispatch:
-            nfcAdapter.disableForegroundDispatch(this);
-        }
+        nfcAdapter.disableForegroundDispatch(this);
     }
 
     @Override
@@ -121,12 +103,9 @@ public class MainActivity extends Activity {
         try {
             // Code for tag has been discovered.
             if (NfcAdapter.ACTION_TAG_DISCOVERED.equals(intent.getAction())) {
-                System.out.println("TAG DISCOVERED");
                 Toast toast = Toast.makeText(this /* MyActivity */, "NFC Tag touched!", Toast.LENGTH_SHORT);
                 toast.show();
                 payload = GetNfcPayload(intent);
-                //((TextView) findViewById(R.id.payload_text)).setText("Content:\n" + payload);
-                //(new Handler()).postDelayed(this::switchActivities, 1000);
                 switchActivities();
             }
             else System.out.println("Failed to discover tag");
@@ -143,7 +122,6 @@ public class MainActivity extends Activity {
         msg = msg.substring(msg.lastIndexOf("en") + 2);
         return msg;
     }
-
 
     private MuseumExhibit exhibitReader(String targetExhibitId) {
         String fileName = "exhibit_database.txt";
