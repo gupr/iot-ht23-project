@@ -88,13 +88,19 @@ public class MainActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-        nfcAdapter.enableForegroundDispatch(this, pendingIntent, new IntentFilter[]{tagFilter}, nfcList);
+        if (nfcAdapter != null) {
+            // Enable NFC Foreground Dispatch, which gives this app priority in handling NFC tags
+            nfcAdapter.enableForegroundDispatch(this, pendingIntent, new IntentFilter[]{tagFilter}, nfcList);
+        }
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        nfcAdapter.disableForegroundDispatch(this);
+        if (nfcAdapter != null) {
+            // disabling foreground dispatch:
+            nfcAdapter.disableForegroundDispatch(this);
+        }
     }
 
     @Override
