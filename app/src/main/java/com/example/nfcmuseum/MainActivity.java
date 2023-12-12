@@ -124,13 +124,10 @@ public class MainActivity extends Activity {
                 System.out.println("TAG DISCOVERED");
                 Toast toast = Toast.makeText(this /* MyActivity */, "NFC Tag touched!", Toast.LENGTH_SHORT);
                 toast.show();
-                String serial = GetNfcSerial(intent);
-                String info = GetNfcFullInfo(intent);
                 payload = GetNfcPayload(intent);
-                ((TextView) findViewById(R.id.serial_text)).setText("NFC Tag Serial Number:\n" + serial);
-                ((TextView) findViewById(R.id.info_text)).setText("Info:\n" + info);
-                ((TextView) findViewById(R.id.payload_text)).setText("Content:\n" + payload);
-                (new Handler()).postDelayed(this::switchActivities, 1000);
+                //((TextView) findViewById(R.id.payload_text)).setText("Content:\n" + payload);
+                //(new Handler()).postDelayed(this::switchActivities, 1000);
+                switchActivities();
             }
             else System.out.println("Failed to discover tag");
         } catch (Exception e) {
@@ -147,44 +144,6 @@ public class MainActivity extends Activity {
         return msg;
     }
 
-    // Get the serial number of NFC tag
-    private String GetNfcSerial (Intent intent) {
-        String msg = ByteArrayToHexString(intent.getByteArrayExtra(NfcAdapter.EXTRA_ID));
-        return msg;
-    }
-
-    // Get the full Ndefmessage from the NFC tag
-    private String GetNfcFullInfo (Intent intent) {
-        Parcelable[] rawMessages = intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES);
-        String tagMsg = "";
-        if (rawMessages != null) {
-            System.out.println("Raw messages not null");
-            NdefMessage[] messages = new NdefMessage[rawMessages.length];
-            StringBuilder record = new StringBuilder();
-            for (int i = 0; i < rawMessages.length; i++) {
-                messages[i] = (NdefMessage) rawMessages[i];
-                record.append("Message #" + i + ": " + messages[i] + "\n");
-            }
-            tagMsg = record.toString();
-        }
-        return tagMsg;
-    }
-
-    private String ByteArrayToHexString(byte [] inarray) {
-        int i, j, in;
-        String [] hex = {"0","1","2","3","4","5","6","7","8","9","A","B","C","D","E","F"};
-        String out= "";
-
-        for(j = 0 ; j < inarray.length ; ++j)
-        {
-            in = (int) inarray[j] & 0xff;
-            i = (in >> 4) & 0x0f;
-            out += hex[i];
-            i = in & 0x0f;
-            out += hex[i];
-        }
-        return out;
-    }
 
     private MuseumExhibit exhibitReader(String targetExhibitId) {
         String fileName = "exhibit_database.txt";
@@ -240,7 +199,7 @@ public class MainActivity extends Activity {
                         null,
                         null,
                         null
-                         );
+                );
                 return exhibit;
             }
         }
@@ -314,7 +273,6 @@ public class MainActivity extends Activity {
             startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
         }
         else {
-            System.out.println("REACHED");
             AlertDialog error = new AlertDialog.Builder(this)
                     .setTitle("Error")
                     .setMessage("Could not find exhibit with the ID of: " + payload)

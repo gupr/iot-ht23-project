@@ -4,14 +4,19 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ActivityOptions;
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.transition.AutoTransition;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import androidx.cardview.widget.CardView;
 
@@ -34,6 +39,7 @@ public class ExhibitActivity extends Activity {
     Button descButton;
     Button similarButton;
     Button exitArtist;
+    ToggleButton saveButton;
     CardView infoCard;
     ImageView exhibitImg;
 
@@ -49,6 +55,7 @@ public class ExhibitActivity extends Activity {
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                controlButton(1);
                 switchActivities();
             }
         });
@@ -58,6 +65,7 @@ public class ExhibitActivity extends Activity {
             @Override
             public void onClick(View view) {
                 infoCard.setVisibility(View.VISIBLE);
+                controlButton(0);
                 Intent intent = getIntent();
                 MuseumExhibit exhibit = (MuseumExhibit) intent.getSerializableExtra("exhibit");
                 ((TextView) findViewById(R.id.title)).setText("Artist Information");
@@ -71,6 +79,7 @@ public class ExhibitActivity extends Activity {
             @Override
             public void onClick(View view) {
                 infoCard.setVisibility(View.INVISIBLE);
+                controlButton(1);
             }
         });
 
@@ -79,6 +88,7 @@ public class ExhibitActivity extends Activity {
             @Override
             public void onClick(View view) {
                 infoCard.setVisibility(View.VISIBLE);
+                controlButton(0);
                 Intent intent = getIntent();
                 ExhibitInfo info = (ExhibitInfo) intent.getSerializableExtra("exhibitInfo");
                 ((TextView) findViewById(R.id.title)).setText("History");
@@ -91,6 +101,7 @@ public class ExhibitActivity extends Activity {
             @Override
             public void onClick(View view) {
                 infoCard.setVisibility(View.VISIBLE);
+                controlButton(0);
                 Intent intent = getIntent();
                 ExhibitInfo info = (ExhibitInfo) intent.getSerializableExtra("exhibitInfo");
                 ((TextView) findViewById(R.id.title)).setText("Description");
@@ -102,11 +113,26 @@ public class ExhibitActivity extends Activity {
         similarButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-            infoCard.setVisibility(View.VISIBLE);
+                infoCard.setVisibility(View.VISIBLE);
+                controlButton(0);
                 Intent intent = getIntent();
                 ExhibitInfo info = (ExhibitInfo) intent.getSerializableExtra("exhibitInfo");
                 ((TextView) findViewById(R.id.title)).setText("Similar Exhibitions");
                 ((TextView) findViewById(R.id.body)).setText(similarExhibitsReader(info.getSimilar()));
+            }
+        });
+
+        Toast toast1 = Toast.makeText(this, "Saved To Collection", Toast.LENGTH_SHORT);
+        Toast toast = Toast.makeText(this, "Removed From Collection", Toast.LENGTH_SHORT);
+        saveButton = findViewById(R.id.saveButton);
+
+        saveButton.setOnCheckedChangeListener((CompoundButton buttonView, boolean isChecked) -> {
+            if (isChecked) {
+                saveButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#D1AC28")));
+                toast1.show();
+            } else {
+                saveButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#FE897F")));
+                toast.show();
             }
         });
 
@@ -127,6 +153,28 @@ public class ExhibitActivity extends Activity {
 
         String artistID = exhibit.getArtistID();
         ((TextView) findViewById(R.id.exhibitArtist)).setText(artistReader(artistID, 1));
+    }
+
+    private void controlButton(int i){
+        similarButton = findViewById(R.id.similarButton);
+        descButton = findViewById(R.id.descButton);
+        historyButton = findViewById(R.id.historyButton);
+        exitArtist = findViewById(R.id.exitArtist);
+        artistButton = findViewById(R.id.artistButton);
+        backButton = findViewById(R.id.exhibit_back_button);
+
+        if (i == 0){
+            similarButton.setClickable(false);
+            descButton.setClickable(false);
+            historyButton.setClickable(false);
+            artistButton.setClickable(false);
+        }else if (i == 1){
+            similarButton.setClickable(true);
+            descButton.setClickable(true);
+            historyButton.setClickable(true);
+            artistButton.setClickable(true);
+        }
+
     }
 
     // This methods takes the artist ID and puts the correct artist under the title via the database.
@@ -178,9 +226,9 @@ public class ExhibitActivity extends Activity {
         if (artistMap.containsKey(artistID)) {
             List<String> artistParameters = artistMap.get(artistID);
             if (artistParameters.size() >= 3) {
-                        //artistParameters.get(0);  // artist id
-                        //artistParameters.get(1);  // artist name
-                        //artistParameters.get(2); // artist description
+                //artistParameters.get(0);  // artist id
+                //artistParameters.get(1);  // artist name
+                //artistParameters.get(2); // artist description
                 if(i == 1) {
                     return artistParameters.get(1);
                 }else if (i == 2){
@@ -255,4 +303,3 @@ public class ExhibitActivity extends Activity {
         startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
     }
 }
-

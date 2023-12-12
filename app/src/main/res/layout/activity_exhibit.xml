@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:animateLayoutChanges="true"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:animateLayoutChanges="true">
 
     <Button
         android:id="@+id/artistButton"
@@ -161,6 +161,24 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/exhibitArtist" />
 
+    <ToggleButton
+        android:id="@+id/saveButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="289dp"
+        android:layout_marginEnd="34dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/small_buttons_roundedcorners"
+        android:backgroundTint="#FE897F"
+        android:fontFamily="@font/arbutusslab_regular"
+        android:text="ToggleButton"
+        android:textOff="SAVE"
+        android:textOn="SAVED"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <androidx.cardview.widget.CardView
         android:id="@+id/infoCard"
         android:layout_width="383dp"
@@ -219,6 +237,7 @@
                 android:layout_height="542dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="2dp"
+                android:elevation="500dp"
                 android:fontFamily="@font/arbutusslab_regular"
                 android:text="The title of the painting, which is known in English as Mona Lisa, is based on the presumption that it depicts Lisa del Giocondo, although her likeness is uncertain. Renaissance art historian Giorgio Vasari wrote that &quot;Leonardo undertook to paint, for Francesco del Giocondo, the portrait of Mona Lisa, his wife.&quot;[17][18][19] Monna in Italian is a polite form of address originating as ma donna—similar to Ma'am, Madam, or my lady in English. This became madonna, and its contraction monna. The title of the painting, though traditionally spelled Mona in English, is spelled in Italian as Monna Lisa (mona being a vulgarity in Italian), but this is rare in English.[20][21]  Lisa del Giocondo was a member of the Gherardini family of Florence and Tuscany, and the wife of wealthy Florentine silk merchant Francesco del Giocondo.[22] The painting is thought to have been commissioned for their new home, and to celebrate the birth of their second son, Andrea.[23] The Italian name for the painting, La Gioconda, means 'jocund' ('happy' or 'jovial') or, literally, 'the jocund one', a pun on the feminine form of Lisa's married name, Giocondo.[22][24] In French, the title La Joconde has the same meaning. "
                 app:layout_constraintEnd_toEndOf="parent"
