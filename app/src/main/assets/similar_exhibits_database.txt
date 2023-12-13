@@ -1,15 +1,47 @@
 exhibit_id = 1
-similar_exhibit = The Mona Lisa, a masterpiece by Leonardo da Vinci, beckons with a magnetic allure at the Louvre. Her enigmatic smile and haunting gaze create a timeless enigma, inviting viewers to unravel the secrets within her brushstrokes. Seeing this iconic portrait is an intimate rendezvous with artistry and intrigue, an unmissable journey into cultural richness.
+similar_exhibit = The Mona Lisa, painted by Leonardo da Vinci, is a renowned masterpiece, known for her enigmatic smile and timeless allure.
 -
 exhibit_id = 2
-similar_exhibit = Leonardo da Vinci's Lady with an Ermine captivates at the Czartoryski Museum. This intimate portrait unveils a woman's grace as she cradles an ermine, symbolizing purity. Witnessing Da Vinci's exquisite technique and capturing the essence of his subject makes this artwork a must-see, inviting you into a Renaissance narrative of elegance and mystery.
+similar_exhibit = "Lady with an Ermine" by Leonardo da Vinci features a woman holding an ermine, portraying grace, mystery, and Renaissance elegance.
 -
 exhibit_id = 3
-similar_exhibit = Van Gogh's self-portrait, a poignant masterpiece, draws you into the depths of his turbulent soul. Displayed in museums worldwide, this intimate portrayal reveals the artist's inner struggles and brilliance. Standing before this evocative canvas is an immersive encounter with Van Gogh's raw emotion, a visceral connection to the artistic genius within.
+similar_exhibit = Van Gogh's self-portraits capture intense emotion, vibrant colors, and expressive brushstrokes, reflecting his inner struggles and artistic brilliance.
 -
 exhibit_id = 4
-similar_exhibit = Michelangelo's David, a sublime marble masterpiece housed in the Galleria dell'Accademia, is a triumph of Renaissance art. Towering at 17 feet, this sculpted marvel exudes strength and grace. Witnessing the chiseled perfection of David, his poised determination, is an awe-inspiring journey into Michelangelo's sculptural genius and a testament to human potential.
+similar_exhibit = Michelangelo's "David" is a masterpiece of Renaissance sculpture, depicting the biblical hero with intricate details, muscular form, and sublime expression.
 -
 exhibit_id = 5
-similar_exhibit = Kristen Visbal's Fearless Girl is a symbol of empowerment, located defiantly facing the Charging Bull in the heart of Wall Street. This bronze figure radiates courage, inviting all to stand strong in the pursuit of gender equality. Observing the Fearless Girl is a dynamic encounter with contemporary art that sparks conversations and inspires a collective call for progress and inclusivity.
+similar_exhibit = "Fearless Girl" by Kristen Visbal is a bronze statue on Wall Street defiantly facing the Charging Bull, symbolizing courage and gender equality.
 -
+exhibit_id = 6
+similar_exhibit = Michelangelo's "The Last Judgment" in the Sistine Chapel portrays Christ's final judgment, featuring dynamic figures and emotional intensity.
+-
+exhibit_id = 7
+similar_exhibit = "The Birth of Venus" by Sandro Botticelli is a celebrated Renaissance painting depicting the goddess Venus emerging from the sea, symbolizing beauty and love.
+-
+exhibit_id = 8
+similar_exhibit = "The Girl with a Pearl Earring" is Johannes Vermeer's masterpiece, a captivating portrait featuring a girl with an enigmatic gaze and a pearl earring.
+-
+exhibit_id = 9
+similar_exhibit = "The Milkmaid" is a masterpiece by Johannes Vermeer, depicting a domestic scene of a maid pouring milk, renowned for its exquisite composition and use of light.
+-
+exhibit_id = 10
+similar_exhibit = Donatello's "Pazzi Madonna" is a marble relief in Florence, part of the Pazzi Chapel, featuring the Madonna and Child.
+-
+exhibit_id = 11
+similar_exhibit = "The Gates of Hell" is a monumental sculptural group work created by Auguste Rodin, featuring scenes inspired by Dante Alighieri's "Inferno."
+-
+exhibit_id = 12
+similar_exhibit = "Starry Night" is a masterpiece by Vincent van Gogh, depicting a swirling night sky with cypress trees and a tranquil village.
+-
+exhibit_id = 13
+similar_exhibit = "The Scream" is an iconic painting by Edvard Munch, expressing intense anxiety with a central figure against a swirling, distorted background.
+-
+exhibit_id = 14
+similar_exhibit = "The Last Supper" is a renowned mural painting by Leonardo da Vinci, portraying Jesus Christ and his disciples during their final meal.
+-
+exhibit_id = 15
+similar_exhibit = "The Persistence of Memory" is a famous painting by Salvador Dalí, featuring melting clocks in a dreamlike landscape, symbolizing the fluidity of time.
+-
+
+

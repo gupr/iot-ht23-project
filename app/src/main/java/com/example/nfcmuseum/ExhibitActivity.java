@@ -39,7 +39,6 @@ public class ExhibitActivity extends Activity {
     Button descButton;
     Button similarButton;
     Button exitArtist;
-    ToggleButton saveButton;
     CardView infoCard;
     ImageView exhibitImg;
 
@@ -119,20 +118,6 @@ public class ExhibitActivity extends Activity {
                 ExhibitInfo info = (ExhibitInfo) intent.getSerializableExtra("exhibitInfo");
                 ((TextView) findViewById(R.id.title)).setText("Similar Exhibitions");
                 ((TextView) findViewById(R.id.body)).setText(similarExhibitsReader(info.getSimilar()));
-            }
-        });
-
-        Toast toast1 = Toast.makeText(this, "Saved To Collection", Toast.LENGTH_SHORT);
-        Toast toast = Toast.makeText(this, "Removed From Collection", Toast.LENGTH_SHORT);
-        saveButton = findViewById(R.id.saveButton);
-
-        saveButton.setOnCheckedChangeListener((CompoundButton buttonView, boolean isChecked) -> {
-            if (isChecked) {
-                saveButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#D1AC28")));
-                toast1.show();
-            } else {
-                saveButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#FE897F")));
-                toast.show();
             }
         });
 

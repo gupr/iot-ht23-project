@@ -161,23 +161,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/exhibitArtist" />
 
-    <ToggleButton
-        android:id="@+id/saveButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="289dp"
-        android:layout_marginEnd="34dp"
-        android:layout_marginBottom="16dp"
-        android:background="@drawable/small_buttons_roundedcorners"
-        android:backgroundTint="#FE897F"
-        android:fontFamily="@font/arbutusslab_regular"
-        android:text="ToggleButton"
-        android:textOff="SAVE"
-        android:textOn="SAVED"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/infoCard"
