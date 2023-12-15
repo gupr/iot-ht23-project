@@ -63,6 +63,9 @@ public class MainActivity extends Activity {
                     switchActivities();
                 })
                 .setNegativeButton("Cancel", null)
+                .setNeutralButton("Map", (dialogInterface, i) -> {
+                    switchToMap();
+                })
                 .create();
         simulateButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -264,5 +267,12 @@ public class MainActivity extends Activity {
                     .create();
             error.show();
         }
+    }
+
+    private void switchToMap() {
+        Intent intent = new Intent(this, MapActivity.class);
+        finish();
+        intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+        startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
     }
 }
