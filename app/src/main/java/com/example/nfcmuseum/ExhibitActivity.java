@@ -1,32 +1,22 @@
 package com.example.nfcmuseum;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ActivityOptions;
 import android.content.Intent;
-import android.content.res.ColorStateList;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.transition.AutoTransition;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
-import android.widget.ToggleButton;
 
 import androidx.cardview.widget.CardView;
-
-import org.w3c.dom.Text;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,12 +31,15 @@ public class ExhibitActivity extends Activity {
     Button exitArtist;
     CardView infoCard;
     ImageView exhibitImg;
+    MuseumExhibit exhibit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         getWindow().requestFeature(Window.FEATURE_ACTIVITY_TRANSITIONS);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exhibit);
+        Intent intent = getIntent();
+        exhibit = (MuseumExhibit) intent.getSerializableExtra("exhibit");
 
         // BUTTONS & CARDS
         infoCard = findViewById(R.id.infoCard);
@@ -65,15 +58,13 @@ public class ExhibitActivity extends Activity {
             public void onClick(View view) {
                 infoCard.setVisibility(View.VISIBLE);
                 controlButton(0);
-                Intent intent = getIntent();
-                MuseumExhibit exhibit = (MuseumExhibit) intent.getSerializableExtra("exhibit");
                 ((TextView) findViewById(R.id.title)).setText("Artist Information");
                 String artistID = exhibit.getArtistID();
                 ((TextView) findViewById(R.id.body)).setText(artistReader(artistID, 2));
             }
         });
 
-        exitArtist = findViewById(R.id.exitArtist);
+        exitArtist = findViewById(R.id.exitInfo);
         exitArtist.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -112,22 +103,15 @@ public class ExhibitActivity extends Activity {
         similarButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                infoCard.setVisibility(View.VISIBLE);
-                controlButton(0);
-                Intent intent = getIntent();
-                ExhibitInfo info = (ExhibitInfo) intent.getSerializableExtra("exhibitInfo");
-                ((TextView) findViewById(R.id.title)).setText("Similar Exhibitions");
-                ((TextView) findViewById(R.id.body)).setText(similarExhibitsReader(info.getSimilar()));
+
+                switchToMap();
+
             }
         });
 
         // Set an exit transition
         getWindow().setExitTransition(new AutoTransition());
         exhibitImg = findViewById(R.id.exhibitImage);
-        Intent intent = getIntent();
-        // receive the value by getSerializableExtra() method and
-        // key must be same which is sent by first activity
-        MuseumExhibit exhibit = (MuseumExhibit) intent.getSerializableExtra("exhibit");
         // display the title string on textView
         ((TextView) findViewById(R.id.exhibitTitle)).setText(exhibit.getTitle());
         ((TextView) findViewById(R.id.exhibitYear)).setText(exhibit.getYear());
@@ -144,7 +128,7 @@ public class ExhibitActivity extends Activity {
         similarButton = findViewById(R.id.similarButton);
         descButton = findViewById(R.id.descButton);
         historyButton = findViewById(R.id.historyButton);
-        exitArtist = findViewById(R.id.exitArtist);
+        exitArtist = findViewById(R.id.exitInfo);
         artistButton = findViewById(R.id.artistButton);
         backButton = findViewById(R.id.exhibit_back_button);
 
@@ -224,67 +208,21 @@ public class ExhibitActivity extends Activity {
         return null;
     }
 
-    private String similarExhibitsReader(List<String> targetExhibitIds) {
-        String fileName = "similar_exhibits_database.txt";
-        StringBuilder result = new StringBuilder();
 
-        BufferedReader reader = null;
 
-        try {
-            reader = new BufferedReader(new InputStreamReader(getAssets().open(fileName)));
-            String line;
-            String currentExhibitId = null;
-            StringBuilder currentSimilarExhibits = new StringBuilder();
 
-            while ((line = reader.readLine()) != null) {
-                if (line.startsWith("exhibit_id")) {
-                    // Extract the exhibit ID
-                    currentExhibitId = line.split("=")[1].trim();
-
-                    // Check if the current exhibit ID is one of the target exhibit IDs
-                    if (targetExhibitIds.contains(currentExhibitId)) {
-                        // Check if we have similar exhibits for the previous exhibit
-                        if (currentSimilarExhibits.length() > 0) {
-                            result.append(currentSimilarExhibits);
-                            currentSimilarExhibits = new StringBuilder();
-                        }
-                    }
-                } else if (line.startsWith("similar_exhibit")) {
-                    // Append the similar exhibits information only if the current exhibit ID matches a target ID
-                    if (currentExhibitId != null && targetExhibitIds.contains(currentExhibitId)) {
-                        currentSimilarExhibits.append(line.split("=")[1].trim()).append("\n" + "\n");
-                    }
-                } else if (line.equals("-")) {
-                    // End of an exhibit, add parameters to the result
-                    if (currentExhibitId != null && targetExhibitIds.contains(currentExhibitId)) {
-                        result.append(currentSimilarExhibits);
-                        currentSimilarExhibits = new StringBuilder();
-                    }
-                }
-            }
-
-            // Check for the last exhibit
-            if (currentExhibitId != null && targetExhibitIds.contains(currentExhibitId)) {
-                result.append(currentSimilarExhibits);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            if (reader != null) {
-                try {
-                    reader.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        return result.toString();
-    }
 
     private void switchActivities() {
         Intent intent = new Intent(this, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
         finish();
+        startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
+    }
+
+    private void switchToMap() {
+        Intent intent = new Intent(this, MapActivity.class);
+        intent.putExtra("exhibitMap", exhibit); //This is where payload should be used to deliver the ID
+        intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
         startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
     }
 }

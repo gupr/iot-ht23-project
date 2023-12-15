@@ -8,7 +8,7 @@ exhibit_history = The Mona Lisa, an enduring masterpiece by Leonardo da Vinci, h
 exhibit_similar = 2,4,7,6,14,10
 exhibit_period = Renaissance
 exhibit_type = Painting
-area_in_museum = PLACEHOLDER
+area_in_museum = A1
 -
 exhibit_id = 2
 exhibit_name = Lady with an Ermine
@@ -20,7 +20,7 @@ exhibit_history = The history of Leonardo da Vinci's Lady with an Ermine is as i
 exhibit_similar = 1,4,7,6,14,10
 exhibit_period = Renaissance
 exhibit_type = Painting
-area_in_museum = PLACEHOLDER
+area_in_museum = A1
 -
 exhibit_id = 3
 exhibit_name = Van Gogh self-portrait
@@ -32,7 +32,7 @@ exhibit_history = Vincent van Gogh's self-portrait from 1889 has a notable histo
 exhibit_similar = 12,13,15
 exhibit_period = Impressionism
 exhibit_type = Painting
-area_in_museum = PLACEHOLDER
+area_in_museum = B2
 -
 exhibit_id = 4
 exhibit_name = David
@@ -44,7 +44,7 @@ exhibit_history = Michelangelo's David embarked on a remarkable journey through 
 exhibit_similar = 5,10,11
 exhibit_period = Renaissance
 exhibit_type = Sculpture
-area_in_museum = PLACEHOLDER
+area_in_museum = B1
 -
 exhibit_id = 5
 exhibit_name = Fearless Girl
@@ -56,7 +56,7 @@ exhibit_history = Fearless Girl emerged in the heart of New York City's Financia
 exhibit_similar = 4,10,11
 exhibit_period = Contemporary art
 exhibit_type = Sculpture
-area_in_museum = PLACEHOLDER
+area_in_museum = B3
 -
 exhibit_id = 6
 exhibit_name = Last Judgement
@@ -68,7 +68,7 @@ exhibit_history = Michelangelo's The Last Judgment has a fascinating history tha
 exhibit_similar = 1,2,4,7,14,10
 exhibit_period = Renaissance
 exhibit_type = Painting
-area_in_museum = PLACEHOLDER
+area_in_museum = A2
 -
 exhibit_id = 7
 exhibit_name = The Birth of Venus
@@ -80,7 +80,7 @@ exhibit_history = Sandro Botticelli's The Birth of Venus has a storied history s
 exhibit_similar = 1,2,4,6,14,10
 exhibit_period = Renaissance
 exhibit_type = Painting
-area_in_museum = PLACEHOLDER
+area_in_museum = A2
 -
 exhibit_id = 8
 exhibit_name = Girl with a Pearl Earring
@@ -92,7 +92,7 @@ exhibit_history = Johannes Vermeer's Girl with a Pearl Earring has a fascinating
 exhibit_similar = 9
 exhibit_period = Baroque
 exhibit_type = Painting
-area_in_museum = PLACEHOLDER
+area_in_museum = C1
 -
 exhibit_id = 9
 exhibit_name = The Milkmaid
@@ -104,7 +104,7 @@ exhibit_history = Johannes Vermeer's The Milkmaid has an intriguing history mark
 exhibit_similar = 8
 exhibit_period = Baroque
 exhibit_type = Painting
-area_in_museum = PLACEHOLDER
+area_in_museum = C1
 -
 exhibit_id = 10
 exhibit_name = Pazzi Madonna
@@ -116,7 +116,7 @@ exhibit_history = Donatello's Pazzi Madonna has a rich history marked by its com
 exhibit_similar = 11,4,5
 exhibit_period = Renaissance
 exhibit_type = Sculpture
-area_in_museum = PLACEHOLDER
+area_in_museum = B1
 -
 exhibit_id = 11
 exhibit_name = The Gates of Hell
@@ -128,7 +128,7 @@ exhibit_history = Auguste Rodin's The Gates of Hell, conceived in the late 19th 
 exhibit_similar = 10,4,5
 exhibit_period = Impressionism
 exhibit_type = Sculpture
-area_in_museum = PLACEHOLDER
+area_in_museum = C2
 -
 exhibit_id = 12
 exhibit_name = Starry Night
@@ -140,7 +140,7 @@ exhibit_history = Vincent van Gogh's Starry Night, created during a tumultuous p
 exhibit_similar = 3,11,13,15
 exhibit_period = Impressionism
 exhibit_type = Painting
-area_in_museum = PLACEHOLDER
+area_in_museum = B2
 -
 exhibit_id = 13
 exhibit_name = The Scream
@@ -152,7 +152,7 @@ exhibit_history = Edvard Munch's The Scream, painted in the late 19th century, h
 exhibit_similar = 3,11,12,15
 exhibit_period = Expressionism
 exhibit_type = Painting
-area_in_museum = PLACEHOLDER
+area_in_museum = C3
 -
 exhibit_id = 14
 exhibit_name = The Last Supper
@@ -164,7 +164,7 @@ exhibit_history = Leonardo da Vinci's The Last Supper, created in the Convent of
 exhibit_similar = 1,2,4,6,7,10
 exhibit_period = Renaissance
 exhibit_type = Painting
-area_in_museum = PLACEHOLDER
+area_in_museum = A1
 -
 exhibit_id = 15
 exhibit_name = The Persistence of Memory
@@ -176,6 +176,6 @@ exhibit_history = Salvador Dalí's The Persistence of Memory, born from the arti
 exhibit_similar = 3,11,12,13
 exhibit_period = Surrealism
 exhibit_type = Painting
-area_in_museum = PLACEHOLDER
+area_in_museum = B2
 -
 

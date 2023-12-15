@@ -64,6 +64,7 @@ public class MainActivity extends Activity {
                 })
                 .setNegativeButton("Cancel", null)
                 .setNeutralButton("Map", (dialogInterface, i) -> {
+                    payload = simPayload.getText().toString();
                     switchToMap();
                 })
                 .create();
@@ -116,14 +117,14 @@ public class MainActivity extends Activity {
                 toast.show();
                 payload = GetNfcPayload(intent);
                 switchActivities();
-            }
-            else System.out.println("Failed to discover tag");
+            } else System.out.println("Failed to discover tag");
         } catch (Exception e) {
-            ((TextView)findViewById(R.id.info_text)).setText("Failed due to " + e);
+            ((TextView) findViewById(R.id.info_text)).setText("Failed due to " + e);
         }
     }
+
     // Get the payload of the NFC tag (the text content)
-    private String GetNfcPayload (Intent intent) {
+    private String GetNfcPayload(Intent intent) {
         Parcelable[] ndefMessageArray = intent.getParcelableArrayExtra(
                 NfcAdapter.EXTRA_NDEF_MESSAGES);
         NdefMessage ndefMessage = (NdefMessage) ndefMessageArray[0];
@@ -132,7 +133,7 @@ public class MainActivity extends Activity {
         return msg;
     }
 
-    private MuseumExhibit exhibitReader(String targetExhibitId) {
+    public MuseumExhibit exhibitReader(String targetExhibitId) {
         String fileName = "exhibit_database.txt";
         Map<String, List<String>> exhibitsMap = new HashMap<>();
         BufferedReader reader = null;
@@ -177,15 +178,17 @@ public class MainActivity extends Activity {
             List<String> exhibitParameters = exhibitsMap.get(targetExhibitId);
             // Check if there are enough parameters
             if (exhibitParameters.size() >= 5) {
+                List<String> objectList = new ArrayList<>(Arrays.asList(exhibitParameters.get(7).split(",")));
                 MuseumExhibit exhibit = new MuseumExhibit(
                         exhibitParameters.get(0),  // exhibit id
-                        exhibitParameters.get(1),  // exhibit name
+                        exhibitParameters.get(1),  // exhibit title
                         exhibitParameters.get(2),  // artist year
                         exhibitParameters.get(3),  // artist id
-                        exhibitParameters.get(4),
-                        null,
-                        null,
-                        null
+                        exhibitParameters.get(4),//image file
+                        exhibitParameters.get(8), //period
+                        exhibitParameters.get(9), //type
+                        exhibitParameters.get(10) , // location
+                        objectList// list of similar exhibits, strings
                 );
                 return exhibit;
             }
@@ -238,11 +241,9 @@ public class MainActivity extends Activity {
             List<String> exhibitParameters = exhibitsMap.get(targetExhibitId);
             // Check if there are enough parameters
             if (exhibitParameters.size() >= 3) {
-                List<String> objectList = new ArrayList<>(Arrays.asList(exhibitParameters.get(7).split(",")));
                 ExhibitInfo info = new ExhibitInfo(
                         exhibitParameters.get(5), // exhibit description
-                        exhibitParameters.get(6), // exhibit history
-                        objectList // similar exhibits
+                        exhibitParameters.get(6) // exhibit history
                 );
                 return info;
             }
@@ -258,8 +259,7 @@ public class MainActivity extends Activity {
             intent.putExtra("exhibitInfo", exhibitInfoReader(payload)); //This is where payload should be used to deliver the ID
             intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
             startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
-        }
-        else {
+        } else {
             AlertDialog error = new AlertDialog.Builder(this)
                     .setTitle("Error")
                     .setMessage("Could not find exhibit with the ID of: " + payload)
@@ -271,8 +271,19 @@ public class MainActivity extends Activity {
 
     private void switchToMap() {
         Intent intent = new Intent(this, MapActivity.class);
-        finish();
-        intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-        startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
+        if (exhibitReader(payload) != null) {
+            intent.putExtra("exhibitMap", exhibitReader(payload)); //This is where payload should be used to deliver the ID
+            intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+            startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
+        } else {
+            AlertDialog error = new AlertDialog.Builder(this)
+                    .setTitle("Error")
+                    .setMessage("Could not find exhibit with the ID of: " + payload)
+                    .setPositiveButton("OK", null)
+                    .create();
+            error.show();
+        }
     }
+
+
 }

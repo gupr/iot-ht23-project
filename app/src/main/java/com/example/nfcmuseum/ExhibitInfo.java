@@ -6,16 +6,10 @@ import java.util.List;
 public class ExhibitInfo implements Serializable {
     private String description;
     private String history;
-    private List<String> similar;
 
-    public ExhibitInfo(String description, String history, List<String> similar) {
+    public ExhibitInfo(String description, String history) {
         this.description = description;
         this.history = history;
-        this.similar = similar;
-    }
-
-    public List<String> getSimilar() {
-        return similar;
     }
 
     public String getDescriptionInfoCard() {return description;}

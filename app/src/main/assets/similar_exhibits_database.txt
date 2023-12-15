@@ -25,22 +25,22 @@ similar_exhibit = "The Girl with a Pearl Earring" is Johannes Vermeer's masterpi
 exhibit_id = 9
 similar_exhibit = "The Milkmaid" is a masterpiece by Johannes Vermeer, depicting a domestic scene of a maid pouring milk, renowned for its exquisite composition and use of light.
 -
-exhibit_id = 10
+exhibit_id = a
 similar_exhibit = Donatello's "Pazzi Madonna" is a marble relief in Florence, part of the Pazzi Chapel, featuring the Madonna and Child.
 -
-exhibit_id = 11
+exhibit_id = b
 similar_exhibit = "The Gates of Hell" is a monumental sculptural group work created by Auguste Rodin, featuring scenes inspired by Dante Alighieri's "Inferno."
 -
-exhibit_id = 12
+exhibit_id = c
 similar_exhibit = "Starry Night" is a masterpiece by Vincent van Gogh, depicting a swirling night sky with cypress trees and a tranquil village.
 -
-exhibit_id = 13
+exhibit_id = d
 similar_exhibit = "The Scream" is an iconic painting by Edvard Munch, expressing intense anxiety with a central figure against a swirling, distorted background.
 -
-exhibit_id = 14
+exhibit_id = e
 similar_exhibit = "The Last Supper" is a renowned mural painting by Leonardo da Vinci, portraying Jesus Christ and his disciples during their final meal.
 -
-exhibit_id = 15
+exhibit_id = f
 similar_exhibit = "The Persistence of Memory" is a famous painting by Salvador Dalí, featuring melting clocks in a dreamlike landscape, symbolizing the fluidity of time.
 -
 
