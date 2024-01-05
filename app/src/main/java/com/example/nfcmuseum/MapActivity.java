@@ -12,6 +12,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import androidx.cardview.widget.CardView;
 import java.io.BufferedReader;
@@ -25,6 +26,7 @@ import java.util.Map;
 
 
 public class MapActivity extends Activity {
+    RelativeLayout rl;
     ImageView mapImg;
     Button backBtn;
     ImageButton exhibitNode;
@@ -36,17 +38,18 @@ public class MapActivity extends Activity {
     int[] filters = new int[4];
     CardView info;
     Button exitInfo;
+    TextView place;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         getWindow().requestFeature(Window.FEATURE_ACTIVITY_TRANSITIONS);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
         getWindow().getDecorView().setBackgroundColor(Color.BLACK);
-
         // Set an exit transition
         getWindow().setExitTransition(new AutoTransition());
+
+        rl = findViewById(R.id.rl);
         mapImg = findViewById(R.id.mapImage);
         mapImg.setImageResource(R.drawable.testmap);
 
@@ -132,20 +135,26 @@ public class MapActivity extends Activity {
 
         Intent intent = getIntent();
         exhibit = (MuseumExhibit) intent.getSerializableExtra("exhibitMap");
-
         initializeBtn(Integer.parseInt(exhibit.getExhibitID()));
         exhibitNode.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("red")));
+        place = findViewById(R.id.redText);
         checkBoxes(filters);
     }
 
+    // Code to run when you click on a node (circle on map)
+    // The clicked node will be marked as orange
     public void nodeClick(View view){
+        resetNodes();
+        checkBoxes(filters);
+        view.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#FF8222")));
         info = findViewById(R.id.infoCard);
         String s = (String) view.getTag();
-         info.setVisibility(View.VISIBLE);
+        info.setVisibility(View.VISIBLE);
         ((TextView) findViewById(R.id.body)).setText(similarExhibitsReader(s) + "Located at: " + exhibitReader(String.valueOf(Integer.parseInt(s, 16))).getLocation());
         ((TextView) findViewById(R.id.title)).setText(exhibitReader(String.valueOf(Integer.parseInt(s, 16))).getTitle());
     }
 
+    // Fetch the exhibits that are similar and mark them on the map as green.
     private void checkBoxes(int[] b) {
         MuseumExhibit simExhibit;
         ArrayList<MuseumExhibit> similar = new ArrayList<MuseumExhibit>();
@@ -169,51 +178,49 @@ public class MapActivity extends Activity {
                     initializeBtn(Integer.parseInt(simExhibit.getExhibitID()));
                     exhibitNode.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("green")));
                 }
-            }else if (Arrays.equals(b, new int[]{0, 0, 1, 1})) {
+            } else if (Arrays.equals(b, new int[]{0, 0, 1, 1})) {
                 if (simExhibit.getLocation().equals(exhibit.getLocation()) && simExhibit.getType().equals(exhibit.getType())) {
                     similar.add(simExhibit);
                     initializeBtn(Integer.parseInt(simExhibit.getExhibitID()));
                     exhibitNode.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("green")));
                 }
-            }else if (Arrays.equals(b, new int[]{0, 1, 0, 0})) {
+            } else if (Arrays.equals(b, new int[]{0, 1, 0, 0})) {
                 if (simExhibit.getArtistID().equals(exhibit.getArtistID())) {
                     similar.add(simExhibit);
                     initializeBtn(Integer.parseInt(simExhibit.getExhibitID()));
                     exhibitNode.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("green")));
                 }
-            }else if (Arrays.equals(b, new int[]{0, 1, 0, 1})) {
+            } else if (Arrays.equals(b, new int[]{0, 1, 0, 1})) {
                 if (simExhibit.getLocation().equals(exhibit.getLocation()) && simExhibit.getArtistID().equals(exhibit.getArtistID())) {
                     similar.add(simExhibit);
                     initializeBtn(Integer.parseInt(simExhibit.getExhibitID()));
                     exhibitNode.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("green")));
                 }
-            }else if (Arrays.equals(b, new int[]{0, 1, 1, 0})) {
+            } else if (Arrays.equals(b, new int[]{0, 1, 1, 0})) {
                 if (simExhibit.getArtistID().equals(exhibit.getArtistID()) && simExhibit.getType().equals(exhibit.getType())) {
                     similar.add(simExhibit);
                     initializeBtn(Integer.parseInt(simExhibit.getExhibitID()));
                     exhibitNode.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("green")));
                 }
-            }else if (Arrays.equals(b, new int[]{0, 1, 1, 1})) {
+            } else if (Arrays.equals(b, new int[]{0, 1, 1, 1})) {
                 if (simExhibit.getLocation().equals(exhibit.getLocation()) && simExhibit.getArtistID().equals(exhibit.getArtistID()) && simExhibit.getType().equals(exhibit.getType())) {
                     similar.add(simExhibit);
                     initializeBtn(Integer.parseInt(simExhibit.getExhibitID()));
                     exhibitNode.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("green")));
                 }
-            }
-            else if (Arrays.equals(b, new int[]{1, 0, 0, 0})) {
+            } else if (Arrays.equals(b, new int[]{1, 0, 0, 0})) {
                 if (simExhibit.getPeriod().equals(exhibit.getPeriod())) {
                     similar.add(simExhibit);
                     initializeBtn(Integer.parseInt(simExhibit.getExhibitID()));
                     exhibitNode.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("green")));
                 }
-            }
-            else if (Arrays.equals(b, new int[]{1, 0, 0, 1})) {
+            } else if (Arrays.equals(b, new int[]{1, 0, 0, 1})) {
                 if (simExhibit.getPeriod().equals(exhibit.getPeriod()) && simExhibit.getLocation().equals(exhibit.getLocation())) {
                     similar.add(simExhibit);
                     initializeBtn(Integer.parseInt(simExhibit.getExhibitID()));
                     exhibitNode.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("green")));
                 }
-            }else if (Arrays.equals(b, new int[]{1, 0, 1, 0})) {
+            } else if (Arrays.equals(b, new int[]{1, 0, 1, 0})) {
                 if (simExhibit.getPeriod().equals(exhibit.getPeriod()) && simExhibit.getType().equals(exhibit.getType())) {
                     similar.add(simExhibit);
                     initializeBtn(Integer.parseInt(simExhibit.getExhibitID()));
@@ -253,57 +260,14 @@ public class MapActivity extends Activity {
         }
     }
 
+    // Select the node on the map using its tag
+    // (change the reference object for exhibitNode)
     private void initializeBtn(int id){
-        switch (id) {
-            case 1:
-                exhibitNode = findViewById(R.id.id1);
-                break;
-            case 2:
-                exhibitNode = findViewById(R.id.id2);
-                break;
-            case 3:
-                exhibitNode = findViewById(R.id.id3);
-                break;
-            case 4:
-                exhibitNode = findViewById(R.id.id4);
-                break;
-            case 5:
-                exhibitNode = findViewById(R.id.id5);
-                break;
-            case 6:
-                exhibitNode = findViewById(R.id.id6);
-                break;
-            case 7:
-                exhibitNode = findViewById(R.id.id7);
-                break;
-            case 8:
-                exhibitNode = findViewById(R.id.id8);
-                break;
-            case 9:
-                exhibitNode = findViewById(R.id.id9);
-                break;
-            case 10:
-                exhibitNode = findViewById(R.id.id10);
-                break;
-            case 11:
-                exhibitNode = findViewById(R.id.id11);
-                break;
-            case 12:
-                exhibitNode = findViewById(R.id.id12);
-                break;
-            case 13:
-                exhibitNode = findViewById(R.id.id13);
-                break;
-            case 14:
-                exhibitNode = findViewById(R.id.id14);
-                break;
-            case 15:
-                exhibitNode = findViewById(R.id.id15);
-                break;
-
-        }
+        String tag = Integer.toHexString(id);
+        exhibitNode = (ImageButton) rl.findViewWithTag(tag);
     }
 
+    // Reset nodes to initial colors
     private void resetNodes () {
         for (int i = 1; i <= 15; i++) {
             initializeBtn(i);
@@ -316,7 +280,6 @@ public class MapActivity extends Activity {
     private String similarExhibitsReader(String targetExhibitIds) {
         String fileName = "similar_exhibits_database.txt";
         StringBuilder result = new StringBuilder();
-
         BufferedReader reader = null;
 
         try {
