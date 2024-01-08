@@ -478,4 +478,11 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/node" />
 
+    <TextView
+        android:id="@+id/currentAttributes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="You are currently at the exhibit (name) which has the attributes: \nPeriod: blahgbal\nArtist: davinfi\nType: asdff\nArea: B1"
+        android:translationY="20dp" />
+
 </RelativeLayout>

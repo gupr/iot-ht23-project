@@ -38,6 +38,7 @@ public class MapActivity extends Activity {
     int[] filters = new int[4];
     CardView info;
     Button exitInfo;
+    TextView currentAttr;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -137,6 +138,11 @@ public class MapActivity extends Activity {
         initializeBtn(Integer.parseInt(exhibit.getExhibitID()));
         exhibitNode.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("red")));
         checkBoxes(filters);
+        currentAttr = findViewById(R.id.currentAttributes);
+        currentAttr.setText("You are currently at the exhibit " + exhibit.getTitle() + " which has these attributes:\nPeriod: " + exhibit.getPeriod()
+                + "\nArtist: " + artistReader(exhibit.getArtistID()) + "\nType: " + exhibit.getType() + "\nArea: " + exhibitReader(exhibit.getExhibitID()).getLocation());
+
+
     }
 
     // Code to run when you click on a node (circle on map)
@@ -331,7 +337,61 @@ public class MapActivity extends Activity {
         return result.toString();
     }
 
-    public MuseumExhibit exhibitReader(String targetExhibitId) {
+    private String artistReader(String artistID) {
+        String fileName = "artist_database.txt";
+        Map<String, List<String>> artistMap = new HashMap<>();
+
+        BufferedReader reader = null;
+
+        try {
+            reader = new BufferedReader(new InputStreamReader(getAssets().open(fileName)));
+            String line;
+            String currentArtistId = null;
+            List<String> currentArtistParameters = new ArrayList<>();
+
+            while ((line = reader.readLine()) != null) {
+                if (line.equals("-")) {
+                    if (currentArtistId != null) {
+                        artistMap.put(currentArtistId, new ArrayList<>(currentArtistParameters));
+                        currentArtistParameters.clear();
+                    }
+                } else {
+                    String[] parts = line.split("=");
+                    if (parts.length == 2) {
+                        String key = parts[0].trim();
+                        String value = parts[1].trim();
+
+                        if ((key.equals("artist_id"))) {
+                            currentArtistId = value;
+                        }
+
+                        currentArtistParameters.add(value);
+                    }
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (reader != null) {
+                try {
+                    reader.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        if (artistMap.containsKey(artistID)) {
+            List<String> artistParameters = artistMap.get(artistID);
+            if (artistParameters.size() >= 1) {
+
+                return artistParameters.get(1);  // artist name
+
+            }
+        }
+        return null;
+    }
+
+    private MuseumExhibit exhibitReader(String targetExhibitId) {
         String fileName = "exhibit_database.txt";
         Map<String, List<String>> exhibitsMap = new HashMap<>();
         BufferedReader reader = null;

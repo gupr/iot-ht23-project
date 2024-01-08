@@ -148,8 +148,7 @@ public class ExhibitActivity extends Activity {
 
     // This methods takes the artist ID and puts the correct artist under the title via the database.
     // as well as the description of the artist if the integer value is correct. (set to 2)
-    // probably kinda redundant but this will do for now as long as it works :)
-    private String artistReader(String artistID, int i) {
+    public String artistReader(String artistID, int i) {
         String fileName = "artist_database.txt";
         Map<String, List<String>> artistMap = new HashMap<>();
 
@@ -207,10 +206,6 @@ public class ExhibitActivity extends Activity {
         }
         return null;
     }
-
-
-
-
 
     private void switchActivities() {
         Intent intent = new Intent(this, MainActivity.class);
